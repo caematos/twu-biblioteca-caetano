@@ -6,10 +6,19 @@ public class Book {
 
     String title;
     String author;
+    int releasedYear;
 
     public Book(String title, String author) {
         this.title = title;
         this.author = author;
+    }
+
+    public int getReleasedYear() {
+        return releasedYear;
+    }
+
+    public void setReleasedYear(int releasedYear) {
+        this.releasedYear = releasedYear;
     }
 
     public String getAuthor() {
@@ -24,11 +33,6 @@ public class Book {
         return title;
     }
 
-    @Override
-    public String toString() {
-        return "Book title: " + title + ", Author: " + author + ".";
-    }
-
     public void setTitle(String title) {
         this.title = title;
     }
@@ -38,12 +42,19 @@ public class Book {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Book book = (Book) o;
-        return Objects.equals(title, book.title) &&
-                Objects.equals(author, book.author);
+        return getReleasedYear() == book.getReleasedYear() &&
+                Objects.equals(getTitle(), book.getTitle()) &&
+                Objects.equals(getAuthor(), book.getAuthor());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(title, author);
+        return Objects.hash(getTitle(), getAuthor(), getReleasedYear());
     }
+
+    @Override
+    public String toString() {
+        return "Book title: " + title + ", Author: " + author + ".";
+    }
+
 }
