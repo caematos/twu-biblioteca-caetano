@@ -18,8 +18,9 @@ public class BibliotecaApp {
         this.outPrintStream = outPrintStream;
     }
 
-    public static void main(PrintStream out) {
-        BibliotecaApp app = new BibliotecaApp(out);
+
+    public static void main(String[] args) {
+        BibliotecaApp app = new BibliotecaApp(System.out);
         Menu menu = new Menu();
         app.printWelcomeMessage();
         app.displayMenuOptions(menu);
@@ -36,6 +37,8 @@ public class BibliotecaApp {
         switch (userChoice) {
             case MENU_OPTION_LIST_BOOKS:
                 printBooksList();
+                break;
+            case 0:
                 break;
             default:
                 outPrintStream.println(invalidOptionMessage);

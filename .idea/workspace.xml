@@ -4,7 +4,7 @@
     <list default="true" id="3d7daf98-64bb-4e2e-a558-c005f54b8b95" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/com/twu/biblioteca/BibliotecaApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/twu/biblioteca/BibliotecaApp.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/com/twu/biblioteca/model/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/com/twu/biblioteca/model/Menu.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -26,11 +26,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="351">
-              <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
+            <state relative-caret-position="588">
+              <caret line="35" selection-start-line="35" selection-end-line="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -41,8 +41,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/com/twu/biblioteca/model/Menu.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="252">
-              <caret line="16" selection-start-line="16" selection-end-line="16" />
+            <state relative-caret-position="231">
+              <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
             </state>
           </provider>
         </entry>
@@ -71,18 +71,15 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/com/twu/biblioteca/BibliotecaApp.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="443">
-              <caret line="55" column="10" selection-start-line="55" selection-start-column="10" selection-end-line="55" selection-end-column="10" />
+            <state relative-caret-position="199">
+              <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#546#547#0" expanded="true" />
-                <element signature="e#597#598#0" expanded="true" />
-                <element signature="e#1596#1597#0" expanded="true" />
-                <element signature="e#1655#1656#0" expanded="true" />
-                <element signature="e#2002#2003#0" expanded="true" />
+                <element signature="e#598#599#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -125,9 +122,9 @@
         <option value="$PROJECT_DIR$/src/com/twu/biblioteca/helper/BookHelper.java" />
         <option value="$PROJECT_DIR$/src/com/twu/biblioteca/model/Book.java" />
         <option value="$PROJECT_DIR$/test/com/twu/biblioteca/helper/BookHelperTest.java" />
+        <option value="$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java" />
         <option value="$PROJECT_DIR$/src/com/twu/biblioteca/model/Menu.java" />
         <option value="$PROJECT_DIR$/src/com/twu/biblioteca/BibliotecaApp.java" />
-        <option value="$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java" />
       </list>
     </option>
   </component>
@@ -172,6 +169,20 @@
               <item name="TWU_Biblioteca-master" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="biblioteca" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="biblioteca" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TWU_Biblioteca-master" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="biblioteca" type="462c0819:PsiDirectoryNode" />
+              <item name="helper" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="biblioteca" type="b2602c69:ProjectViewProjectNode" />
+              <item name="TWU_Biblioteca-master" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="biblioteca" type="462c0819:PsiDirectoryNode" />
+              <item name="model" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="biblioteca" type="b2602c69:ProjectViewProjectNode" />
@@ -229,7 +240,7 @@
       </list>
     </option>
   </component>
-  <component name="RunManager" selected="JUnit.BibliotecaAppTest.shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption">
+  <component name="RunManager" selected="Application.BibliotecaApp">
     <configuration name="BibliotecaApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
@@ -316,9 +327,9 @@
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="Application.BibliotecaApp" />
         <item itemvalue="JUnit.BibliotecaAppTest.shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption" />
         <item itemvalue="JUnit.BibliotecaAppTest" />
-        <item itemvalue="Application.BibliotecaApp" />
         <item itemvalue="JUnit.BookHelperTest.shouldReturnAtLeastOneBook" />
         <item itemvalue="JUnit.BookHelperTest" />
       </list>
@@ -342,7 +353,9 @@
       <workItem from="1559933969261" duration="134000" />
       <workItem from="1559934117320" duration="450000" />
       <workItem from="1559934598110" duration="19000" />
-      <workItem from="1559934642913" duration="6547000" />
+      <workItem from="1559934642913" duration="7101000" />
+      <workItem from="1559942239594" duration="205000" />
+      <workItem from="1559942458576" duration="309000" />
     </task>
     <task id="LOCAL-00001" summary="Revert &quot;cleaning idea folder&quot;&#10;&#10;This reverts commit 49c77ab2">
       <created>1559934572355</created>
@@ -351,16 +364,17 @@
       <option name="project" value="LOCAL" />
       <updated>1559934572356</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="1.5 getting notified after chosing wrong option // adding outSpy to get print out strings">
+      <created>1559941869343</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1559941869343</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="BookHelperTest_shouldReturnAtLeastOneBook - 2019.06.07 at 15h 13m 56s.xml">
-      <configuration name="BookHelperTest.shouldReturnAtLeastOneBook" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="BookHelperTest_shouldReturnAtLeastOneBook - 2019.06.07 at 15h 14m 05s.xml">
-      <configuration name="BookHelperTest.shouldReturnAtLeastOneBook" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="BibliotecaAppTest - 2019.06.07 at 15h 43m 36s.xml">
       <configuration name="BibliotecaAppTest" configurationId="JUnit" />
     </history-entry>
@@ -385,15 +399,21 @@
     <history-entry file="BibliotecaAppTest_shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption - 2019.06.07 at 17h 51m 12s.xml">
       <configuration name="BibliotecaAppTest.shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="BibliotecaAppTest_shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption - 2019.06.07 at 18h 07m 13s.xml">
+      <configuration name="BibliotecaAppTest.shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="BibliotecaAppTest_shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption - 2019.06.07 at 18h 08m 49s.xml">
+      <configuration name="BibliotecaAppTest.shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="27371000" />
+    <option name="totallyTimeSpent" value="28439000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="0" y="23" width="1680" height="1027" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.18398532" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1888753" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -441,19 +461,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Revert &quot;cleaning idea folder&quot;&#10;&#10;This reverts commit 49c77ab2" />
-    <option name="LAST_COMMIT_MESSAGE" value="Revert &quot;cleaning idea folder&quot;&#10;&#10;This reverts commit 49c77ab2" />
-  </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java</url>
-          <line>37</line>
-          <properties />
-          <option name="timeStamp" value="5" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+    <MESSAGE value="1.5 getting notified after chosing wrong option // adding outSpy to get print out strings" />
+    <option name="LAST_COMMIT_MESSAGE" value="1.5 getting notified after chosing wrong option // adding outSpy to get print out strings" />
   </component>
   <component name="antWorkspaceConfiguration">
     <option name="IS_AUTOSCROLL_TO_SOURCE" value="false" />
@@ -475,10 +484,20 @@
     <entry file="file://$PROJECT_DIR$/biblioteca.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
+    <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="588">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/com/twu/biblioteca/model/Menu.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="252">
-          <caret line="16" selection-start-line="16" selection-end-line="16" />
+        <state relative-caret-position="231">
+          <caret line="11" column="24" selection-start-line="11" selection-start-column="24" selection-end-line="11" selection-end-column="24" />
         </state>
       </provider>
     </entry>
@@ -515,25 +534,12 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/com/twu/biblioteca/BibliotecaApp.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="443">
-          <caret line="55" column="10" selection-start-line="55" selection-start-column="10" selection-end-line="55" selection-end-column="10" />
+        <state relative-caret-position="199">
+          <caret line="23" column="31" lean-forward="true" selection-start-line="23" selection-start-column="31" selection-end-line="23" selection-end-column="31" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#546#547#0" expanded="true" />
-            <element signature="e#597#598#0" expanded="true" />
-            <element signature="e#1596#1597#0" expanded="true" />
-            <element signature="e#1655#1656#0" expanded="true" />
-            <element signature="e#2002#2003#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/test/com/twu/biblioteca/BibliotecaAppTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="351">
-          <caret line="35" lean-forward="true" selection-start-line="35" selection-end-line="35" />
-          <folding>
-            <element signature="imports" expanded="true" />
+            <element signature="e#598#599#0" expanded="true" />
           </folding>
         </state>
       </provider>
