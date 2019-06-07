@@ -1,16 +1,11 @@
 package com.twu.biblioteca;
 
 
-import com.twu.biblioteca.helper.BookHelper;
-import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Menu;
 import org.junit.Test;
 
-import java.util.ArrayList;
-import java.util.List;
+import static org.junit.Assert.*;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThat;
 
 public class BibliotecaAppTest {
 
@@ -18,10 +13,14 @@ public class BibliotecaAppTest {
 
     @Test
     public void shouldReturnExpectedWelcomeMessage() {
-        BibliotecaApp app = new BibliotecaApp();
-
-        String actualMessage = app.getWelcomeMessage();
+        String actualMessage = BibliotecaApp.getWelcomeMessage();
         assertEquals(EXPECTED_WELCOME_MESSAGE, actualMessage);
+    }
+
+    @Test
+    public void shouldReturnListOfBooksOptionInMenu() {
+        Menu menu = new Menu();
+        assertTrue(menu.getMenuOptions().contains("[1] - List of Books"));
     }
 
 }
