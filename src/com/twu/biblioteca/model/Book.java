@@ -24,6 +24,11 @@ public class Book {
         return title;
     }
 
+    @Override
+    public String toString() {
+        return "Book title: " + title + ", Author: " + author + ".";
+    }
+
     public void setTitle(String title) {
         this.title = title;
     }
