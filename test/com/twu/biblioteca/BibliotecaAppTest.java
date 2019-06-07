@@ -4,12 +4,17 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.model.Menu;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 
 public class BibliotecaAppTest {
 
     private static final String EXPECTED_WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
+    public static final int INVALID_USER_CHOICE = 203123131;
 
     @Test
     public void shouldReturnExpectedWelcomeMessage() {
@@ -21,6 +26,14 @@ public class BibliotecaAppTest {
     public void shouldReturnListOfBooksOptionInMenu() {
         Menu menu = new Menu();
         assertTrue(menu.getMenuOptions().contains("[1] - List of Books"));
+    }
+
+    @Test
+    public void shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption() {
+        ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
+        BibliotecaApp app = new BibliotecaApp(new PrintStream(outSpy));
+        app.executeUserChoice(INVALID_USER_CHOICE);
+        assertEquals(outSpy.toString().replaceAll("\\n", ""), "Please, choose a valid option.");
     }
 
 }
