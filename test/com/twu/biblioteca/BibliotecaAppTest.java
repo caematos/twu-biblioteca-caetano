@@ -33,7 +33,11 @@ public class BibliotecaAppTest {
         ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
         BibliotecaApp app = new BibliotecaApp(new PrintStream(outSpy));
         app.executeUserChoice(INVALID_USER_CHOICE);
-        assertEquals(outSpy.toString().replaceAll("\\n", ""), "Please, choose a valid option.");
+        assertEquals(cleanStringFromMarkers(outSpy.toString()), "Please, choose a valid option.");
+    }
+
+    private String cleanStringFromMarkers(String string) {
+        return string.replaceAll("\\n", "");
     }
 
 }

@@ -17,12 +17,4 @@ public class BookHelperTest {
         assertTrue(booksList.size() > 0);
     }
 
-    private ArrayList<Book> getExpectedBooks() {
-        ArrayList<Book> dummyBookList = new ArrayList<>();
-        dummyBookList.add(new Book("Effective Java", "Robert C. Martin"));
-        dummyBookList.add(new Book("Clean Code", "Joshua Bloch"));
-        dummyBookList.add(new Book("Java Concurrency in Practice", "Brian Goetz"));
-
-        return dummyBookList;
-    }
 }

@@ -3,8 +3,8 @@ package com.twu.biblioteca.model;
 import java.util.ArrayList;
 
 public class Menu {
-    public static final String MENU_ITEM_LIST_OF_BOOKS = "[1] - List of Books";
-    public static final String MENU_ITEM_QUIT_THE_APPLICATION = "[0] - Quit the application";
+    private static final String MENU_ITEM_LIST_OF_BOOKS = "[1] - List of Books";
+    private static final String MENU_ITEM_QUIT_THE_APPLICATION = "[0] - Quit the application";
     private ArrayList<String> menuOptions = new ArrayList<>();
 
     public Menu() {
