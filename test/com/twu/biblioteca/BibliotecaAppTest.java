@@ -2,6 +2,7 @@ package com.twu.biblioteca;
 
 
 import com.twu.biblioteca.model.Menu;
+import com.twu.biblioteca.util.StringUtils;
 import org.junit.Test;
 
 import java.io.ByteArrayOutputStream;
@@ -33,11 +34,7 @@ public class BibliotecaAppTest {
         ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
         BibliotecaApp app = new BibliotecaApp(new PrintStream(outSpy));
         app.executeUserChoice(INVALID_USER_CHOICE);
-        assertEquals(cleanStringFromMarkers(outSpy.toString()), "Please, choose a valid option.");
-    }
-
-    private String cleanStringFromMarkers(String string) {
-        return string.replaceAll("\\n", "");
+        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Please, choose a valid option.");
     }
 
 }

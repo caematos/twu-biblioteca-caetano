@@ -2,15 +2,25 @@ package com.twu.biblioteca.controller;
 
 import com.twu.biblioteca.helper.BookHelper;
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.util.StringUtils;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class BookControllerTest {
+    Book testBook1;
 
+    @Before
+    public void setUpBooks() {
+        testBook1 = new Book("testBook", "testAuthor", 2019);
+    }
+    @After
     @Test
     public void shouldOnlyListAvailableBooks() {
         //given
@@ -36,10 +46,28 @@ public class BookControllerTest {
     public void shouldMarkABookAsUnavailable() {
         //given
         BookController bookController = new BookController();
-        Book book = new Book("testBook", "testAuthor", 2019);
 
-        bookController.checkoutBook(book);
+        bookController.checkoutBook(testBook1);
 
-        assertFalse(book.isAvailable());
+        assertFalse(testBook1.isAvailable());
+    }
+
+    @Test
+    public void shouldReturnSuccessMessageOnSuccessfulCheckout() {
+        ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
+        BookController controller = new BookController(new PrintStream(outSpy));
+
+        controller.checkoutBook(testBook1);
+        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Thank you! Enjoy the book.");
+    }
+
+    @Test
+    public void shouldReturnErrorMessageOnSuccessfulCheckout() {
+        ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
+        BookController controller = new BookController(new PrintStream(outSpy));
+
+        testBook1.setAvailable(false);
+        controller.checkoutBook(testBook1);
+        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Sorry, that book is not available");
     }
 }
