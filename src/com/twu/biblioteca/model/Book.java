@@ -7,10 +7,20 @@ public class Book {
     private String title;
     private String author;
     private int releasedYear;
+    private boolean available = true;
 
-    public Book(String title, String author) {
+    public Book(String title, String author, int releasedYear) {
         this.title = title;
         this.author = author;
+        this.releasedYear = releasedYear;
+    }
+
+    public boolean isAvailable() {
+        return available;
+    }
+
+    public void setAvailable(boolean available) {
+        this.available = available;
     }
 
     public int getReleasedYear() {
@@ -54,7 +64,7 @@ public class Book {
 
     @Override
     public String toString() {
-        return "Book title: " + title + ", Author: " + author + ".";
+        return "Book title: " + title + ", Author(s): " + author + ", " + releasedYear;
     }
 
 }
