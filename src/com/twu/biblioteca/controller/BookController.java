@@ -8,7 +8,9 @@ import java.util.stream.Collectors;
 
 public class BookController {
     public static final String CHECKOUT_SUCCESS_MESSAGE = "Thank you! Enjoy the book.";
+    public static final String RETURN_SUCCESS_MESSAGE = "Thank you for returning the book";
     public static final String CHECKOUT_ERROR_MESSAGE = "Sorry, that book is not available";
+    public static final String RETURN_ERROR_MESSAGE = "That is not a valid book to return";
 
     private PrintStream systemOut;
 
@@ -33,7 +35,13 @@ public class BookController {
         }
     }
 
-    public void returnBook(Book testBook1) {
-        testBook1.setAvailable(true);
+    public void returnBook(Book book) {
+        if (!book.isAvailable()) {
+            book.setAvailable(true);
+            systemOut.println(RETURN_SUCCESS_MESSAGE);
+        } else {
+            systemOut.println(RETURN_ERROR_MESSAGE);
+        }
+
     }
 }

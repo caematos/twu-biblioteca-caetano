@@ -80,5 +80,24 @@ public class BookControllerTest {
         testBook1.setAvailable(false);
         controller.checkoutBook(testBook1);
         assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Sorry, that book is not available");
+    }  @Test
+
+    public void shouldReturnSuccessMessageOnSuccessfulReturn() {
+        ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
+        BookController controller = new BookController(new PrintStream(outSpy));
+
+        testBook1.setAvailable(false);
+        controller.returnBook(testBook1);
+
+        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Thank you for returning the book");
+    }
+
+    @Test
+    public void shouldReturnErrorMessageOnSuccessfulReturn() {
+        ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
+        BookController controller = new BookController(new PrintStream(outSpy));
+
+        controller.returnBook(testBook1);
+        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "That is not a valid book to return");
     }
 }
