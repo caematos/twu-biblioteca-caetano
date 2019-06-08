@@ -6,6 +6,7 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class BookControllerTest {
@@ -29,5 +30,16 @@ public class BookControllerTest {
         //then
         assertTrue(finalAvailableBooks == initialAvailableBooks - 1);
 
+    }
+
+    @Test
+    public void shouldMarkABookAsUnavailable() {
+        //given
+        BookController bookController = new BookController();
+        Book book = new Book("testBook", "testAuthor", 2019);
+
+        bookController.checkoutBook(book);
+
+        assertFalse(book.isAvailable());
     }
 }
