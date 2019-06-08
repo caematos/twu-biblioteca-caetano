@@ -32,4 +32,8 @@ public class BookController {
             systemOut.println(CHECKOUT_ERROR_MESSAGE);
         }
     }
+
+    public void returnBook(Book testBook1) {
+        testBook1.setAvailable(true);
+    }
 }

@@ -53,6 +53,17 @@ public class BookControllerTest {
     }
 
     @Test
+    public void shouldMarkABookAsAvailable() {
+        //given
+        BookController bookController = new BookController();
+        testBook1.setAvailable(false);
+
+        bookController.returnBook(testBook1);
+
+        assertTrue(testBook1.isAvailable());
+    }
+
+    @Test
     public void shouldReturnSuccessMessageOnSuccessfulCheckout() {
         ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
         BookController controller = new BookController(new PrintStream(outSpy));
