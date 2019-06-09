@@ -13,7 +13,8 @@ public class BibliotecaApp {
 
     private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
     private static final int MENU_OPTION_LIST_BOOKS = 1;
-    public static final int MENU_OPTION_QUIT = 0;
+    private static final int MENU_OPTION_QUIT = 0;
+
     private PrintStream outPrintStream;
 
     public BibliotecaApp(PrintStream outPrintStream) {
@@ -22,9 +23,9 @@ public class BibliotecaApp {
 
     public static void main(String[] args) {
         BibliotecaApp app = new BibliotecaApp(System.out);
-        Menu menu = new Menu();
+
         app.printWelcomeMessage();
-        app.displayMenuOptions(menu);
+        app.displayOptionsMenu();
 
         int userChoice = app.getUserChoice();
 
@@ -55,8 +56,8 @@ public class BibliotecaApp {
         return userInput.nextInt();
     }
 
-    public void displayMenuOptions(Menu menu) {
-        for (String menuOption : menu.getMenuOptions()) {
+    public void displayOptionsMenu() {
+        for (String menuOption : new Menu().getMenuOptions()) {
             outPrintStream.println(menuOption);
         }
     }

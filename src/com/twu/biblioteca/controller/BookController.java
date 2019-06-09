@@ -1,16 +1,18 @@
 package com.twu.biblioteca.controller;
 
+import com.twu.biblioteca.exception.BookNotFoundException;
 import com.twu.biblioteca.model.Book;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class BookController {
-    public static final String CHECKOUT_SUCCESS_MESSAGE = "Thank you! Enjoy the book.";
-    public static final String RETURN_SUCCESS_MESSAGE = "Thank you for returning the book";
-    public static final String CHECKOUT_ERROR_MESSAGE = "Sorry, that book is not available";
-    public static final String RETURN_ERROR_MESSAGE = "That is not a valid book to return";
+    private static final String CHECKOUT_SUCCESS_MESSAGE = "Thank you! Enjoy the book.";
+    private static final String CHECKOUT_ERROR_MESSAGE = "Sorry, that book is not available";
+    private static final String RETURN_SUCCESS_MESSAGE = "Thank you for returning the book";
+    private static final String RETURN_ERROR_MESSAGE = "That is not a valid book to return";
 
     private PrintStream systemOut;
 
@@ -43,5 +45,15 @@ public class BookController {
             systemOut.println(RETURN_ERROR_MESSAGE);
         }
 
+    }
+
+    public Book getBookByTitle(ArrayList<Book> dummyBookList, String bookTitleQuery) throws BookNotFoundException {
+        Optional<Book> firstBookMatch = dummyBookList.stream().filter(c -> c.getTitle().equalsIgnoreCase(bookTitleQuery)).findFirst();
+
+        if (!firstBookMatch.isPresent()) {
+            throw new BookNotFoundException();
+        }
+
+        return firstBookMatch.get();
     }
 }
