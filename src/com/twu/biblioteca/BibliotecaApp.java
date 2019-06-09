@@ -25,11 +25,14 @@ public class BibliotecaApp {
         BibliotecaApp app = new BibliotecaApp(System.out);
 
         app.printWelcomeMessage();
-        app.displayOptionsMenu();
 
-        int userChoice = app.getUserChoice();
+        int userChoice;
 
-        app.executeUserChoice(userChoice);
+        do {
+            app.displayOptionsMenu();
+            userChoice = app.getUserChoice();
+            app.executeUserChoice(userChoice);
+        } while (userChoice != 0);
 
     }
 
@@ -57,8 +60,9 @@ public class BibliotecaApp {
     }
 
     public void displayOptionsMenu() {
+        outPrintStream.println();
         for (String menuOption : new Menu().getMenuOptions()) {
-            outPrintStream.println(menuOption);
+            outPrintStream.print(menuOption + " - ");
         }
     }
 
