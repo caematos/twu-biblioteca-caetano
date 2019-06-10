@@ -15,6 +15,26 @@ public class Book {
         this.releasedYear = releasedYear;
     }
 
+    public Book title(String title) {
+        this.title = title;
+        return this;
+    }
+
+    public Book author(String author) {
+        this.author = author;
+        return this;
+    }
+
+    public Book releasedYear(int year) {
+        this.releasedYear = year;
+        return this;
+    }
+
+    public Book available(boolean available) {
+        this.available = available;
+        return this;
+    }
+
     public boolean isAvailable() {
         return available;
     }

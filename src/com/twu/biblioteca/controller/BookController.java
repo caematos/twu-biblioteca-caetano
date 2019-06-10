@@ -4,7 +4,6 @@ import com.twu.biblioteca.exception.BookNotFoundException;
 import com.twu.biblioteca.model.Book;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -47,7 +46,7 @@ public class BookController {
         }
     }
 
-    public void findAndReturnBookByTitle(String bookTitle, ArrayList<Book> bookList) {
+    public void findAndReturnBookByTitle(String bookTitle, List<Book> bookList) {
         try {
             returnBook(getBookByTitle(bookList, bookTitle));
         } catch (BookNotFoundException e) {
@@ -55,7 +54,7 @@ public class BookController {
         }
     }
 
-    public void findAndCheckoutBookByTitle(String bookTitle, ArrayList<Book> bookList) {
+    public void findAndCheckoutBookByTitle(String bookTitle, List<Book> bookList) {
         try {
             checkoutBook(getBookByTitle(bookList, bookTitle));
         } catch (BookNotFoundException e) {
@@ -63,8 +62,7 @@ public class BookController {
         }
     }
 
-
-    public Book getBookByTitle(ArrayList<Book> dummyBookList, String bookTitleQuery) throws BookNotFoundException {
+    public Book getBookByTitle(List<Book> dummyBookList, String bookTitleQuery) throws BookNotFoundException {
         Optional<Book> firstBookMatch = dummyBookList.stream().filter(c -> c.getTitle().equalsIgnoreCase(bookTitleQuery)).findFirst();
 
         if (!firstBookMatch.isPresent()) {

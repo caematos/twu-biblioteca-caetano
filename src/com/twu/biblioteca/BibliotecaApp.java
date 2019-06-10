@@ -6,7 +6,6 @@ import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Menu;
 
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -21,7 +20,6 @@ public class BibliotecaApp {
     private PrintStream outPrintStream;
     private BookController bookController = new BookController();
     private BookHelper bookHelper = new BookHelper();
-    private ArrayList<Book> booksList = bookHelper.getDummyBooksList();
 
     public BibliotecaApp(PrintStream outPrintStream) {
         this.outPrintStream = outPrintStream;
@@ -50,10 +48,10 @@ public class BibliotecaApp {
                 printAvailableBooksList();
                 break;
             case MENU_OPTION_CHECKOUT_BOOK:
-                bookController.findAndCheckoutBookByTitle(getBookTitleFromUser(), booksList);
+                bookController.findAndCheckoutBookByTitle(getBookTitleFromUser(), BookHelper.getBooksList());
                 break;
             case MENU_OPTION_RETURN_BOOK:
-                bookController.findAndReturnBookByTitle(getBookTitleFromUser(), booksList);
+                bookController.findAndReturnBookByTitle(getBookTitleFromUser(), BookHelper.getBooksList());
                 break;
             case MENU_OPTION_QUIT:
                 break;
@@ -69,7 +67,7 @@ public class BibliotecaApp {
     }
 
     public void printAvailableBooksList() {
-         printBooksList(bookController.getAvailableBooks(booksList));
+         printBooksList(bookController.getAvailableBooks(BookHelper.getBooksList()));
     }
 
     public int getUserChoice() {

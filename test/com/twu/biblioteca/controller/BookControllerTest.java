@@ -12,7 +12,6 @@ import org.junit.rules.ExpectedException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,7 +22,6 @@ public class BookControllerTest {
     private Book testBook1;
     private ByteArrayOutputStream outSpy;
     private BookController bookController;
-    private BookHelper bookHelper;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -33,29 +31,26 @@ public class BookControllerTest {
         testBook1 = new Book("testBook", "testAuthor", 2019);
         outSpy = new ByteArrayOutputStream();
         bookController = new BookController(new PrintStream(outSpy));
-        bookHelper = new BookHelper();
     }
 
     @After
     @Test
     public void shouldOnlyListAvailableBooks() {
-        //given
-        ArrayList<Book> bookList = bookHelper.getDummyBooksList();
+        //given (arrange)
+        List<Book> bookList = BookHelper.getBooksList();
         int initialAvailableBooks = bookController.getAvailableBooks(bookList).size();
 
-        //when
+        //when (act)
         bookList.get(0).setAvailable(false);
 
         int finalAvailableBooks = bookController.getAvailableBooks(bookList).size();
 
-        //then
-        assertTrue(finalAvailableBooks == initialAvailableBooks - 1);
-
+        //then (assert)
+        assertEquals(finalAvailableBooks, initialAvailableBooks - 1);
     }
 
     @Test
     public void shouldMarkABookAsUnavailable() {
-        //given
         BookController bookController = new BookController();
 
         bookController.checkoutBook(testBook1);
@@ -65,7 +60,6 @@ public class BookControllerTest {
 
     @Test
     public void shouldMarkABookAsAvailable() {
-        //given
         testBook1.setAvailable(false);
 
         bookController.returnBook(testBook1);
@@ -104,7 +98,7 @@ public class BookControllerTest {
     @Test
     public void shouldFindBookByTitle() throws BookNotFoundException {
         //given
-        ArrayList<Book> dummyBookList = bookHelper.getDummyBooksList();
+        List<Book> dummyBookList = BookHelper.getBooksList();
 
         //when
         String firstBookOfTheListTitle = dummyBookList.get(0).getTitle();
@@ -116,11 +110,9 @@ public class BookControllerTest {
 
     @Test
     public void shouldThrowBookNotFoundExceptionWhenBookIsNotFound() throws BookNotFoundException {
-
         exception.expect(BookNotFoundException.class);
 
-        bookController.getBookByTitle(bookHelper.getDummyBooksList(), "");
-
+        bookController.getBookByTitle(BookHelper.getBooksList(), "");
     }
 
     @Test
