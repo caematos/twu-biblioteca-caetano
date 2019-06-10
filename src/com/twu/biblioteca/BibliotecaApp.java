@@ -1,12 +1,14 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.controller.BookController;
+import com.twu.biblioteca.exception.BookNotFoundException;
 import com.twu.biblioteca.helper.BookHelper;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Menu;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BibliotecaApp {
@@ -16,6 +18,9 @@ public class BibliotecaApp {
     private static final int MENU_OPTION_QUIT = 0;
 
     private PrintStream outPrintStream;
+    private BookController bookController = new BookController();
+    private BookHelper bookHelper = new BookHelper();
+    private ArrayList<Book> booksList = bookHelper.getDummyBooksList();
 
     public BibliotecaApp(PrintStream outPrintStream) {
         this.outPrintStream = outPrintStream;
@@ -23,25 +28,31 @@ public class BibliotecaApp {
 
     public static void main(String[] args) {
         BibliotecaApp app = new BibliotecaApp(System.out);
+        app.startBiblioteca();
 
-        app.printWelcomeMessage();
+    }
+
+    private void startBiblioteca() {
+        printWelcomeMessage();
 
         int userChoice;
-
         do {
-            app.displayOptionsMenu();
-            userChoice = app.getUserChoice();
-            app.executeUserChoice(userChoice);
+            displayOptionsMenu();
+            userChoice = getUserChoice();
+            executeUserChoice(userChoice);
         } while (userChoice != 0);
-
     }
 
     public void executeUserChoice(int userChoice) {
         String invalidOptionMessage = "Please, choose a valid option.";
-
         switch (userChoice) {
             case MENU_OPTION_LIST_BOOKS:
                 printAvailableBooksList();
+                break;
+            case 2:
+                findAndCheckoutBookByTitle();
+                break;
+            case 3:
                 break;
             case MENU_OPTION_QUIT:
                 break;
@@ -50,13 +61,33 @@ public class BibliotecaApp {
         }
     }
 
+    private void findAndCheckoutBookByTitle() {
+        String bookTitle = getBookTitleFromUser();
+        try {
+            bookController.checkoutBook(bookController.getBookByTitle(booksList, bookTitle));
+        } catch (BookNotFoundException e) {
+            outPrintStream.println("Book not found, please try again.");
+        }
+    }
+
+    private String getBookTitleFromUser() {
+        Scanner scanner = new Scanner(System.in);
+        outPrintStream.println("Please, insert book title and press <return>: ");
+        return scanner.nextLine();
+    }
+
     public void printAvailableBooksList() {
-         printBooksList(new BookController().getAvailableBooks(new BookHelper().getDummyBooksList()));
+         printBooksList(bookController.getAvailableBooks(booksList));
     }
 
     public int getUserChoice() {
         Scanner userInput = new Scanner(System.in);
-        return userInput.nextInt();
+
+        try {
+            return userInput.nextInt();
+        } catch (InputMismatchException e) {
+            return 99;
+        }
     }
 
     public void displayOptionsMenu() {

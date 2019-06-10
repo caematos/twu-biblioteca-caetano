@@ -22,7 +22,7 @@ public class BibliotecaAppTest {
     }
 
     @Test
-    public void shouldReturnAnErrorMessageWhenUserChosesAnInvalidOption() {
+    public void shouldReturnAnErrorMessageWhenUserChoseAnInvalidOption() {
         ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
         BibliotecaApp app = new BibliotecaApp(new PrintStream(outSpy));
         app.executeUserChoice(INVALID_USER_CHOICE);
