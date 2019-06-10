@@ -8,6 +8,7 @@ import com.twu.biblioteca.model.Menu;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
 
 public class BibliotecaApp {
@@ -91,7 +92,7 @@ public class BibliotecaApp {
         outPrintStream.println(getWelcomeMessage());
     }
 
-    private void printBooksList(ArrayList<Book> booksList) {
+    private void printBooksList(List<Book> booksList) {
         for (Book book : booksList) {
             outPrintStream.println(book);
         }

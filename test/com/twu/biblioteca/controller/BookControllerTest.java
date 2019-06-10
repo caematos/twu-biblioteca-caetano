@@ -6,12 +6,17 @@ import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.util.StringUtils;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
 public class BookControllerTest {
@@ -19,6 +24,9 @@ public class BookControllerTest {
     private ByteArrayOutputStream outSpy;
     private BookController bookController;
     private BookHelper bookHelper;
+
+    @Rule
+    public ExpectedException exception = ExpectedException.none();
 
     @Before
     public void setUpBooks() {
@@ -94,7 +102,7 @@ public class BookControllerTest {
     }
 
     @Test
-    public void shouldFindBookByName() throws BookNotFoundException {
+    public void shouldFindBookByTitle() throws BookNotFoundException {
         //given
         ArrayList<Book> dummyBookList = bookHelper.getDummyBooksList();
 
@@ -103,5 +111,29 @@ public class BookControllerTest {
         Book book = bookController.getBookByTitle(dummyBookList, firstBookOfTheListTitle);
 
         assertEquals(book.getTitle().toUpperCase(), firstBookOfTheListTitle.toUpperCase());
+    }
+
+
+    @Test
+    public void shouldThrowBookNotFoundExceptionWhenBookIsNotFound() throws BookNotFoundException {
+
+        exception.expect(BookNotFoundException.class);
+
+        bookController.getBookByTitle(bookHelper.getDummyBooksList(), "");
+
+    }
+
+    @Test
+    public void shouldGetAllBooksMarkedAsAvailable() {
+        Book unavailableBook = new Book("", "", 2);
+        unavailableBook.setAvailable(false);
+        Book availableBook = new Book("", "", 2);
+
+        List<Book> library = asList(unavailableBook, availableBook);
+        List<Book> expectedBooksList = Collections.singletonList(availableBook);
+        List<Book> actualBooksList = bookController.getAvailableBooks(library);
+
+        assertEquals(actualBooksList.size(), 1);
+        assertEquals(expectedBooksList, actualBooksList);
     }
 }

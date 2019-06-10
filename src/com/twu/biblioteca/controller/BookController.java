@@ -5,6 +5,7 @@ import com.twu.biblioteca.model.Book;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
@@ -24,8 +25,8 @@ public class BookController {
         this.outPrintStream = systemOut;
     }
 
-    public ArrayList<Book> getAvailableBooks(ArrayList<Book> bookList) {
-        return (ArrayList<Book>) bookList.stream().filter(b -> b.isAvailable()).collect(Collectors.toList());
+    public List<Book> getAvailableBooks(List<Book> bookList) {
+        return bookList.stream().filter(Book::isAvailable).collect(Collectors.toList());
     }
 
     public void checkoutBook(Book book) {
@@ -44,7 +45,6 @@ public class BookController {
         } else {
             outPrintStream.println(RETURN_ERROR_MESSAGE);
         }
-
     }
 
     public void findAndReturnBookByTitle(String bookTitle, ArrayList<Book> bookList) {
