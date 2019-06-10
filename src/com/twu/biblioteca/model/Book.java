@@ -15,6 +15,10 @@ public class Book {
         this.releasedYear = releasedYear;
     }
 
+    public Book() {
+
+    }
+
     public Book title(String title) {
         this.title = title;
         return this;

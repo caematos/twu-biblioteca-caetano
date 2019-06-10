@@ -5,7 +5,6 @@ import com.twu.biblioteca.exception.BookCheckoutNotAvailable;
 import com.twu.biblioteca.exception.BookNotFoundException;
 import com.twu.biblioteca.helper.BookHelper;
 import com.twu.biblioteca.model.Book;
-import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -21,7 +20,6 @@ import static org.junit.Assert.*;
 
 public class BookServiceTest {
     private Book testBook1;
-    private ByteArrayOutputStream outSpy;
     private BookService bookService;
 
     @Rule
@@ -30,11 +28,10 @@ public class BookServiceTest {
     @Before
     public void setUpBooks() {
         testBook1 = new Book("testBook", "testAuthor", 2019);
-        outSpy = new ByteArrayOutputStream();
+        ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
         bookService = new BookService(new PrintStream(outSpy));
     }
 
-    @After
     @Test
     public void shouldOnlyListAvailableBooks() {
         //given (arrange)

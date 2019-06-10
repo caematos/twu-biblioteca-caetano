@@ -19,7 +19,6 @@ public class BibliotecaApp {
 
     private PrintStream outPrintStream;
     private BookService bookService = new BookService();
-    private BookHelper bookHelper = new BookHelper();
 
     public BibliotecaApp(PrintStream outPrintStream) {
         this.outPrintStream = outPrintStream;
