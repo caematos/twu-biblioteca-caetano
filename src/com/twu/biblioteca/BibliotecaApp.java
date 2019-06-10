@@ -1,7 +1,6 @@
 package com.twu.biblioteca;
 
 import com.twu.biblioteca.controller.BookController;
-import com.twu.biblioteca.exception.BookNotFoundException;
 import com.twu.biblioteca.helper.BookHelper;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Menu;
@@ -15,8 +14,8 @@ public class BibliotecaApp {
     private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
     private static final int MENU_OPTION_LIST_BOOKS = 1;
     private static final int MENU_OPTION_QUIT = 0;
-    public static final int MENU_OPTION_CHECKOUT_BOOK = 2;
-    public static final int MENU_OPTION_RETURN_BOOK = 3;
+    private static final int MENU_OPTION_CHECKOUT_BOOK = 2;
+    private static final int MENU_OPTION_RETURN_BOOK = 3;
 
     private PrintStream outPrintStream;
     private BookController bookController = new BookController();
@@ -30,7 +29,6 @@ public class BibliotecaApp {
     public static void main(String[] args) {
         BibliotecaApp app = new BibliotecaApp(System.out);
         app.startBiblioteca();
-
     }
 
     private void startBiblioteca() {
@@ -51,33 +49,15 @@ public class BibliotecaApp {
                 printAvailableBooksList();
                 break;
             case MENU_OPTION_CHECKOUT_BOOK:
-                findAndCheckoutBookByTitle();
+                bookController.findAndCheckoutBookByTitle(getBookTitleFromUser(), booksList);
                 break;
             case MENU_OPTION_RETURN_BOOK:
-                findAndReturnBookByTitle();
+                bookController.findAndReturnBookByTitle(getBookTitleFromUser(), booksList);
                 break;
             case MENU_OPTION_QUIT:
                 break;
             default:
                 outPrintStream.println(invalidOptionMessage);
-        }
-    }
-
-    private void findAndReturnBookByTitle() {
-        String bookTitle = getBookTitleFromUser();
-        try {
-            bookController.returnBook(bookController.getBookByTitle(booksList, bookTitle));
-        } catch (BookNotFoundException e) {
-            outPrintStream.println("Book not found, please try again.");
-        }
-    }
-
-    private void findAndCheckoutBookByTitle() {
-        String bookTitle = getBookTitleFromUser();
-        try {
-            bookController.checkoutBook(bookController.getBookByTitle(booksList, bookTitle));
-        } catch (BookNotFoundException e) {
-            outPrintStream.println("Book not found, please try again.");
         }
     }
 

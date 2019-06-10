@@ -14,14 +14,14 @@ public class BookController {
     private static final String RETURN_SUCCESS_MESSAGE = "Thank you for returning the book";
     private static final String RETURN_ERROR_MESSAGE = "That is not a valid book to return";
 
-    private PrintStream systemOut;
+    private PrintStream outPrintStream;
 
     public BookController() {
-        this.systemOut = System.out;
+        this.outPrintStream = System.out;
     }
 
     public BookController(PrintStream systemOut) {
-        this.systemOut = systemOut;
+        this.outPrintStream = systemOut;
     }
 
     public ArrayList<Book> getAvailableBooks(ArrayList<Book> bookList) {
@@ -31,21 +31,38 @@ public class BookController {
     public void checkoutBook(Book book) {
         if (book.isAvailable()) {
             book.setAvailable(false);
-            systemOut.println(CHECKOUT_SUCCESS_MESSAGE);
+            outPrintStream.println(CHECKOUT_SUCCESS_MESSAGE);
         } else {
-            systemOut.println(CHECKOUT_ERROR_MESSAGE);
+            outPrintStream.println(CHECKOUT_ERROR_MESSAGE);
         }
     }
 
     public void returnBook(Book book) {
         if (!book.isAvailable()) {
             book.setAvailable(true);
-            systemOut.println(RETURN_SUCCESS_MESSAGE);
+            outPrintStream.println(RETURN_SUCCESS_MESSAGE);
         } else {
-            systemOut.println(RETURN_ERROR_MESSAGE);
+            outPrintStream.println(RETURN_ERROR_MESSAGE);
         }
 
     }
+
+    public void findAndReturnBookByTitle(String bookTitle, ArrayList<Book> bookList) {
+        try {
+            returnBook(getBookByTitle(bookList, bookTitle));
+        } catch (BookNotFoundException e) {
+            outPrintStream.println("Book not found, please try again.");
+        }
+    }
+
+    public void findAndCheckoutBookByTitle(String bookTitle, ArrayList<Book> bookList) {
+        try {
+            checkoutBook(getBookByTitle(bookList, bookTitle));
+        } catch (BookNotFoundException e) {
+            outPrintStream.println("Book not found, please try again.");
+        }
+    }
+
 
     public Book getBookByTitle(ArrayList<Book> dummyBookList, String bookTitleQuery) throws BookNotFoundException {
         Optional<Book> firstBookMatch = dummyBookList.stream().filter(c -> c.getTitle().equalsIgnoreCase(bookTitleQuery)).findFirst();
