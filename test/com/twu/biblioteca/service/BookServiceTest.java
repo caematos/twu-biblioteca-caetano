@@ -1,9 +1,10 @@
-package com.twu.biblioteca.controller;
+package com.twu.biblioteca.service;
 
+import com.twu.biblioteca.exception.BookCheckinNotAvailable;
+import com.twu.biblioteca.exception.BookCheckoutNotAvailable;
 import com.twu.biblioteca.exception.BookNotFoundException;
 import com.twu.biblioteca.helper.BookHelper;
 import com.twu.biblioteca.model.Book;
-import com.twu.biblioteca.util.StringUtils;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Rule;
@@ -18,10 +19,10 @@ import java.util.List;
 import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
-public class BookControllerTest {
+public class BookServiceTest {
     private Book testBook1;
     private ByteArrayOutputStream outSpy;
-    private BookController bookController;
+    private BookService bookService;
 
     @Rule
     public ExpectedException exception = ExpectedException.none();
@@ -30,7 +31,7 @@ public class BookControllerTest {
     public void setUpBooks() {
         testBook1 = new Book("testBook", "testAuthor", 2019);
         outSpy = new ByteArrayOutputStream();
-        bookController = new BookController(new PrintStream(outSpy));
+        bookService = new BookService(new PrintStream(outSpy));
     }
 
     @After
@@ -38,61 +39,59 @@ public class BookControllerTest {
     public void shouldOnlyListAvailableBooks() {
         //given (arrange)
         List<Book> bookList = BookHelper.getBooksList();
-        int initialAvailableBooks = bookController.getAvailableBooks(bookList).size();
+        int initialAvailableBooks = bookService.getAvailableBooks(bookList).size();
 
         //when (act)
         bookList.get(0).setAvailable(false);
 
-        int finalAvailableBooks = bookController.getAvailableBooks(bookList).size();
+        int finalAvailableBooks = bookService.getAvailableBooks(bookList).size();
 
         //then (assert)
         assertEquals(finalAvailableBooks, initialAvailableBooks - 1);
     }
 
     @Test
-    public void shouldMarkABookAsUnavailable() {
-        BookController bookController = new BookController();
+    public void shouldMarkABookAsUnavailable() throws BookCheckoutNotAvailable {
+        BookService bookService = new BookService();
 
-        bookController.checkoutBook(testBook1);
+        bookService.checkoutBook(testBook1);
 
         assertFalse(testBook1.isAvailable());
     }
 
     @Test
-    public void shouldMarkABookAsAvailable() {
+    public void shouldMarkBookAsAvailable() throws BookCheckinNotAvailable {
         testBook1.setAvailable(false);
 
-        bookController.returnBook(testBook1);
+        bookService.returnBook(testBook1);
 
         assertTrue(testBook1.isAvailable());
     }
 
     @Test
-    public void shouldReturnSuccessMessageOnSuccessfulCheckout() {
-        bookController.checkoutBook(testBook1);
-        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Thank you! Enjoy the book.");
+    public void shouldPassWhenSuccessfulCheckout() throws BookCheckoutNotAvailable {
+        bookService.checkoutBook(testBook1);
     }
 
     @Test
-    public void shouldReturnErrorMessageOnSuccessfulCheckout() {
+    public void shouldThrowExceptionWhenInvalidCheckout() throws BookCheckoutNotAvailable {
+        exception.expect(BookCheckoutNotAvailable.class);
+
         testBook1.setAvailable(false);
-        bookController.checkoutBook(testBook1);
-
-        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Sorry, that book is not available");
+        bookService.checkoutBook(testBook1);
     }
 
     @Test
-    public void shouldReturnSuccessMessageOnSuccessfulReturn() {
+    public void shouldPassWhenSuccessfulReturn() throws BookCheckinNotAvailable {
         testBook1.setAvailable(false);
-        bookController.returnBook(testBook1);
-
-        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "Thank you for returning the book");
+        bookService.returnBook(testBook1);
     }
 
     @Test
-    public void shouldReturnErrorMessageOnSuccessfulReturn() {
-        bookController.returnBook(testBook1);
-        assertEquals(StringUtils.cleanStringFromMarkers(outSpy.toString()), "That is not a valid book to return");
+    public void shouldThrowErrorWhenInvalidReturn() throws BookCheckinNotAvailable {
+        exception.expect(BookCheckinNotAvailable.class);
+
+        bookService.returnBook(testBook1);
     }
 
     @Test
@@ -102,7 +101,7 @@ public class BookControllerTest {
 
         //when
         String firstBookOfTheListTitle = dummyBookList.get(0).getTitle();
-        Book book = bookController.getBookByTitle(dummyBookList, firstBookOfTheListTitle);
+        Book book = bookService.getBookByTitle(dummyBookList, firstBookOfTheListTitle);
 
         assertEquals(book.getTitle().toUpperCase(), firstBookOfTheListTitle.toUpperCase());
     }
@@ -112,7 +111,7 @@ public class BookControllerTest {
     public void shouldThrowBookNotFoundExceptionWhenBookIsNotFound() throws BookNotFoundException {
         exception.expect(BookNotFoundException.class);
 
-        bookController.getBookByTitle(BookHelper.getBooksList(), "");
+        bookService.getBookByTitle(BookHelper.getBooksList(), "");
     }
 
     @Test
@@ -123,7 +122,7 @@ public class BookControllerTest {
 
         List<Book> library = asList(unavailableBook, availableBook);
         List<Book> expectedBooksList = Collections.singletonList(availableBook);
-        List<Book> actualBooksList = bookController.getAvailableBooks(library);
+        List<Book> actualBooksList = bookService.getAvailableBooks(library);
 
         assertEquals(actualBooksList.size(), 1);
         assertEquals(expectedBooksList, actualBooksList);

@@ -1,6 +1,6 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.controller.BookController;
+import com.twu.biblioteca.service.BookService;
 import com.twu.biblioteca.helper.BookHelper;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Menu;
@@ -18,7 +18,7 @@ public class BibliotecaApp {
     private static final int MENU_OPTION_RETURN_BOOK = 3;
 
     private PrintStream outPrintStream;
-    private BookController bookController = new BookController();
+    private BookService bookService = new BookService();
     private BookHelper bookHelper = new BookHelper();
 
     public BibliotecaApp(PrintStream outPrintStream) {
@@ -48,10 +48,10 @@ public class BibliotecaApp {
                 printAvailableBooksList();
                 break;
             case MENU_OPTION_CHECKOUT_BOOK:
-                bookController.findAndCheckoutBookByTitle(getBookTitleFromUser(), BookHelper.getBooksList());
+                bookService.findAndCheckoutBookByTitle(getBookTitleFromUser());
                 break;
             case MENU_OPTION_RETURN_BOOK:
-                bookController.findAndReturnBookByTitle(getBookTitleFromUser(), BookHelper.getBooksList());
+                bookService.findAndReturnBookByTitle(getBookTitleFromUser());
                 break;
             case MENU_OPTION_QUIT:
                 break;
@@ -67,7 +67,7 @@ public class BibliotecaApp {
     }
 
     public void printAvailableBooksList() {
-         printBooksList(bookController.getAvailableBooks(BookHelper.getBooksList()));
+         printBooksList(bookService.getAvailableBooks(BookHelper.getBooksList()));
     }
 
     public int getUserChoice() {
