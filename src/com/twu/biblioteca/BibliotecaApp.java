@@ -12,10 +12,11 @@ import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class BibliotecaApp {
-
     private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
     private static final int MENU_OPTION_LIST_BOOKS = 1;
     private static final int MENU_OPTION_QUIT = 0;
+    public static final int MENU_OPTION_CHECKOUT_BOOK = 2;
+    public static final int MENU_OPTION_RETURN_BOOK = 3;
 
     private PrintStream outPrintStream;
     private BookController bookController = new BookController();
@@ -49,15 +50,25 @@ public class BibliotecaApp {
             case MENU_OPTION_LIST_BOOKS:
                 printAvailableBooksList();
                 break;
-            case 2:
+            case MENU_OPTION_CHECKOUT_BOOK:
                 findAndCheckoutBookByTitle();
                 break;
-            case 3:
+            case MENU_OPTION_RETURN_BOOK:
+                findAndReturnBookByTitle();
                 break;
             case MENU_OPTION_QUIT:
                 break;
             default:
                 outPrintStream.println(invalidOptionMessage);
+        }
+    }
+
+    private void findAndReturnBookByTitle() {
+        String bookTitle = getBookTitleFromUser();
+        try {
+            bookController.returnBook(bookController.getBookByTitle(booksList, bookTitle));
+        } catch (BookNotFoundException e) {
+            outPrintStream.println("Book not found, please try again.");
         }
     }
 
@@ -82,7 +93,6 @@ public class BibliotecaApp {
 
     public int getUserChoice() {
         Scanner userInput = new Scanner(System.in);
-
         try {
             return userInput.nextInt();
         } catch (InputMismatchException e) {
