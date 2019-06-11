@@ -2,7 +2,7 @@ package com.twu.biblioteca.model;
 
 import java.util.Objects;
 
-public class Book {
+public class Book extends Product {
 
     private String title;
     private String author;
@@ -39,10 +39,12 @@ public class Book {
         return this;
     }
 
+    @Override
     public boolean isAvailable() {
         return available;
     }
 
+    @Override
     public void setAvailable(boolean available) {
         this.available = available;
     }

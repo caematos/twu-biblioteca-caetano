@@ -1,9 +1,9 @@
 package com.twu.biblioteca.service;
 
-import com.twu.biblioteca.exception.BookCheckinNotAvailable;
-import com.twu.biblioteca.exception.BookCheckoutNotAvailable;
-import com.twu.biblioteca.exception.BookNotFoundException;
-import com.twu.biblioteca.helper.BookHelper;
+import com.twu.biblioteca.exception.CheckinNotAvailable;
+import com.twu.biblioteca.exception.CheckoutNotAvailable;
+import com.twu.biblioteca.exception.ProductNotFoundException;
+import com.twu.biblioteca.helper.LibraryHelper;
 import com.twu.biblioteca.model.Book;
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,7 +35,7 @@ public class BookServiceTest {
     @Test
     public void shouldOnlyListAvailableBooks() {
         //given (arrange)
-        List<Book> bookList = BookHelper.getBooksList();
+        List<Book> bookList = LibraryHelper.getBooksList();
         int initialAvailableBooks = bookService.getAvailableBooks(bookList).size();
 
         //when (act)
@@ -48,7 +48,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void shouldMarkABookAsUnavailable() throws BookCheckoutNotAvailable {
+    public void shouldMarkABookAsUnavailable() throws CheckoutNotAvailable {
         BookService bookService = new BookService();
 
         bookService.checkoutBook(testBook1);
@@ -57,7 +57,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void shouldMarkBookAsAvailable() throws BookCheckinNotAvailable {
+    public void shouldMarkBookAsAvailable() throws CheckinNotAvailable {
         testBook1.setAvailable(false);
 
         bookService.returnBook(testBook1);
@@ -66,35 +66,35 @@ public class BookServiceTest {
     }
 
     @Test
-    public void shouldPassWhenSuccessfulCheckout() throws BookCheckoutNotAvailable {
+    public void shouldPassWhenSuccessfulCheckout() throws CheckoutNotAvailable {
         bookService.checkoutBook(testBook1);
     }
 
     @Test
-    public void shouldThrowExceptionWhenInvalidCheckout() throws BookCheckoutNotAvailable {
-        exception.expect(BookCheckoutNotAvailable.class);
+    public void shouldThrowExceptionWhenInvalidCheckout() throws CheckoutNotAvailable {
+        exception.expect(CheckoutNotAvailable.class);
 
         testBook1.setAvailable(false);
         bookService.checkoutBook(testBook1);
     }
 
     @Test
-    public void shouldPassWhenSuccessfulReturn() throws BookCheckinNotAvailable {
+    public void shouldPassWhenSuccessfulReturn() throws CheckinNotAvailable {
         testBook1.setAvailable(false);
         bookService.returnBook(testBook1);
     }
 
     @Test
-    public void shouldThrowErrorWhenInvalidReturn() throws BookCheckinNotAvailable {
-        exception.expect(BookCheckinNotAvailable.class);
+    public void shouldThrowErrorWhenInvalidReturn() throws CheckinNotAvailable {
+        exception.expect(CheckinNotAvailable.class);
 
         bookService.returnBook(testBook1);
     }
 
     @Test
-    public void shouldFindBookByTitle() throws BookNotFoundException {
+    public void shouldFindBookByTitle() throws ProductNotFoundException {
         //given
-        List<Book> dummyBookList = BookHelper.getBooksList();
+        List<Book> dummyBookList = LibraryHelper.getBooksList();
 
         //when
         String firstBookOfTheListTitle = dummyBookList.get(0).getTitle();
@@ -105,10 +105,10 @@ public class BookServiceTest {
 
 
     @Test
-    public void shouldThrowBookNotFoundExceptionWhenBookIsNotFound() throws BookNotFoundException {
-        exception.expect(BookNotFoundException.class);
+    public void shouldThrowBookNotFoundExceptionWhenBookIsNotFound() throws ProductNotFoundException {
+        exception.expect(ProductNotFoundException.class);
 
-        bookService.getBookByTitle(BookHelper.getBooksList(), "");
+        bookService.getBookByTitle(LibraryHelper.getBooksList(), "");
     }
 
     @Test

@@ -1,10 +1,11 @@
 package com.twu.biblioteca.service;
 
-import com.twu.biblioteca.exception.BookCheckinNotAvailable;
-import com.twu.biblioteca.exception.BookCheckoutNotAvailable;
-import com.twu.biblioteca.exception.BookNotFoundException;
-import com.twu.biblioteca.helper.BookHelper;
+import com.twu.biblioteca.exception.CheckinNotAvailable;
+import com.twu.biblioteca.exception.CheckoutNotAvailable;
+import com.twu.biblioteca.exception.ProductNotFoundException;
+import com.twu.biblioteca.helper.LibraryHelper;
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Product;
 
 import java.io.PrintStream;
 import java.util.List;
@@ -31,47 +32,51 @@ public class BookService {
         return bookList.stream().filter(Book::isAvailable).collect(Collectors.toList());
     }
 
-    public void checkoutBook(Book book) throws BookCheckoutNotAvailable {
+    public List<Product> getAvailableProducts(List<Product> products) {
+        return products.stream().filter(Product::isAvailable).collect(Collectors.toList());
+    }
+
+    public void checkoutBook(Book book) throws CheckoutNotAvailable {
         if (!book.isAvailable()) {
-            throw new BookCheckoutNotAvailable();
+            throw new CheckoutNotAvailable();
         }
             book.setAvailable(false);
     }
 
-    public void returnBook(Book book) throws BookCheckinNotAvailable {
+    public void returnBook(Book book) throws CheckinNotAvailable {
         if (book.isAvailable()) {
-            throw new BookCheckinNotAvailable();
+            throw new CheckinNotAvailable();
         }
         book.setAvailable(true);
     }
 
     public void findAndReturnBookByTitle(String bookTitle) {
         try {
-            returnBook(getBookByTitle(BookHelper.getBooksList(), bookTitle));
+            returnBook(getBookByTitle(LibraryHelper.getBooksList(), bookTitle));
             outPrintStream.println(RETURN_SUCCESS_MESSAGE);
-        } catch (BookNotFoundException e) {
+        } catch (ProductNotFoundException e) {
             outPrintStream.println("Book not found, please try again.");
-        } catch (BookCheckinNotAvailable e) {
+        } catch (CheckinNotAvailable e) {
             outPrintStream.println(RETURN_ERROR_MESSAGE);
         }
     }
 
     public void findAndCheckoutBookByTitle(String bookTitle) {
         try {
-            checkoutBook(getBookByTitle(BookHelper.getBooksList(), bookTitle));
+            checkoutBook(getBookByTitle(LibraryHelper.getBooksList(), bookTitle));
             outPrintStream.println(CHECKOUT_SUCCESS_MESSAGE);
-        } catch (BookNotFoundException e) {
+        } catch (ProductNotFoundException e) {
             outPrintStream.println("Book not found, please try again.");
-        } catch (BookCheckoutNotAvailable e) {
+        } catch (CheckoutNotAvailable e) {
             outPrintStream.println(CHECKOUT_ERROR_MESSAGE);
         }
     }
 
-    public Book getBookByTitle(List<Book> dummyBookList, String bookTitleQuery) throws BookNotFoundException {
+    public Book getBookByTitle(List<Book> dummyBookList, String bookTitleQuery) throws ProductNotFoundException {
         Optional<Book> firstBookMatch = dummyBookList.stream().filter(c -> c.getTitle().equalsIgnoreCase(bookTitleQuery)).findFirst();
 
         if (!firstBookMatch.isPresent()) {
-            throw new BookNotFoundException();
+            throw new ProductNotFoundException();
         }
 
         return firstBookMatch.get();

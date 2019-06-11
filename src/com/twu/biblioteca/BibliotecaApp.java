@@ -1,11 +1,12 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.service.BookService;
-import com.twu.biblioteca.helper.BookHelper;
-import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.helper.LibraryHelper;
 import com.twu.biblioteca.model.Menu;
+import com.twu.biblioteca.model.Product;
+import com.twu.biblioteca.service.BookService;
 
 import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
@@ -16,6 +17,7 @@ public class BibliotecaApp {
     private static final int MENU_OPTION_QUIT = 0;
     private static final int MENU_OPTION_CHECKOUT_BOOK = 2;
     private static final int MENU_OPTION_RETURN_BOOK = 3;
+    public static final int MENU_OPTION_LIST_MOVIES = 4;
 
     private PrintStream outPrintStream;
     private BookService bookService = new BookService();
@@ -44,13 +46,16 @@ public class BibliotecaApp {
         String invalidOptionMessage = "Please, choose a valid option.";
         switch (userChoice) {
             case MENU_OPTION_LIST_BOOKS:
-                printAvailableBooksList();
+                printProductsList(new ArrayList<>(bookService.getAvailableProducts(new ArrayList<>(LibraryHelper.getBooksList()))));
                 break;
             case MENU_OPTION_CHECKOUT_BOOK:
                 bookService.findAndCheckoutBookByTitle(getBookTitleFromUser());
                 break;
             case MENU_OPTION_RETURN_BOOK:
                 bookService.findAndReturnBookByTitle(getBookTitleFromUser());
+                break;
+            case MENU_OPTION_LIST_MOVIES:
+                printProductsList(new ArrayList<>(bookService.getAvailableProducts(new ArrayList<>(LibraryHelper.getMoviesList()))));
                 break;
             case MENU_OPTION_QUIT:
                 break;
@@ -65,10 +70,6 @@ public class BibliotecaApp {
         return scanner.nextLine();
     }
 
-    public void printAvailableBooksList() {
-         printBooksList(bookService.getAvailableBooks(BookHelper.getBooksList()));
-    }
-
     public int getUserChoice() {
         Scanner userInput = new Scanner(System.in);
         try {
@@ -81,7 +82,7 @@ public class BibliotecaApp {
     public void displayOptionsMenu() {
         outPrintStream.println();
         for (String menuOption : new Menu().getMenuOptions()) {
-            outPrintStream.print(menuOption + " - ");
+            outPrintStream.print(menuOption + "\n");
         }
     }
 
@@ -89,9 +90,9 @@ public class BibliotecaApp {
         outPrintStream.println(getWelcomeMessage());
     }
 
-    private void printBooksList(List<Book> booksList) {
-        for (Book book : booksList) {
-            outPrintStream.println(book);
+    private void printProductsList(List<Product> products) {
+        for (Product product : products) {
+            outPrintStream.println(product);
         }
     }
 
