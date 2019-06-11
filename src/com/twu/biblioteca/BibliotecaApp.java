@@ -3,7 +3,7 @@ package com.twu.biblioteca;
 import com.twu.biblioteca.helper.LibraryHelper;
 import com.twu.biblioteca.model.Menu;
 import com.twu.biblioteca.model.Product;
-import com.twu.biblioteca.service.BookService;
+import com.twu.biblioteca.service.LibraryService;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -20,7 +20,7 @@ public class BibliotecaApp {
     public static final int MENU_OPTION_LIST_MOVIES = 4;
 
     private PrintStream outPrintStream;
-    private BookService bookService = new BookService();
+    private LibraryService libraryService = new LibraryService();
 
     public BibliotecaApp(PrintStream outPrintStream) {
         this.outPrintStream = outPrintStream;
@@ -46,16 +46,16 @@ public class BibliotecaApp {
         String invalidOptionMessage = "Please, choose a valid option.";
         switch (userChoice) {
             case MENU_OPTION_LIST_BOOKS:
-                printProductsList(new ArrayList<>(bookService.getAvailableProducts(new ArrayList<>(LibraryHelper.getBooksList()))));
+                printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryHelper.getBooksList()))));
                 break;
             case MENU_OPTION_CHECKOUT_BOOK:
-                bookService.findAndCheckoutBookByTitle(getBookTitleFromUser());
+                libraryService.findAndCheckoutBookByTitle(getBookTitleFromUser());
                 break;
             case MENU_OPTION_RETURN_BOOK:
-                bookService.findAndReturnBookByTitle(getBookTitleFromUser());
+                libraryService.findAndReturnBookByTitle(getBookTitleFromUser());
                 break;
             case MENU_OPTION_LIST_MOVIES:
-                printProductsList(new ArrayList<>(bookService.getAvailableProducts(new ArrayList<>(LibraryHelper.getMoviesList()))));
+                printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryHelper.getMoviesList()))));
                 break;
             case MENU_OPTION_QUIT:
                 break;

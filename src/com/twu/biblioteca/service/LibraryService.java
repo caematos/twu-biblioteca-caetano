@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-public class BookService {
+public class LibraryService {
     private static final String CHECKOUT_SUCCESS_MESSAGE = "Thank you! Enjoy the book.";
     private static final String CHECKOUT_ERROR_MESSAGE = "Sorry, that book is not available";
     private static final String RETURN_SUCCESS_MESSAGE = "Thank you for returning the book";
@@ -20,11 +20,11 @@ public class BookService {
 
     private PrintStream outPrintStream;
 
-    public BookService() {
+    public LibraryService() {
         this.outPrintStream = System.out;
     }
 
-    public BookService(PrintStream systemOut) {
+    public LibraryService(PrintStream systemOut) {
         this.outPrintStream = systemOut;
     }
 
