@@ -4,6 +4,7 @@ import com.twu.biblioteca.db.LibraryDatabase;
 import com.twu.biblioteca.exception.*;
 import com.twu.biblioteca.model.Menu;
 import com.twu.biblioteca.model.Product;
+import com.twu.biblioteca.service.CustomerService;
 import com.twu.biblioteca.service.LibraryService;
 import com.twu.biblioteca.service.LoginService;
 
@@ -103,8 +104,19 @@ public class BibliotecaApp {
     }
 
     private void printCheckedOutProducts() {
+        if (!CustomerService.getLoggedCustomer().isLibrarian()) {
+            outPrintStream.println("Sorry, you are not a Librarian");
+            return;
+        }
+
         List<Product> movies = new ArrayList<>(libraryService.getUnavailableProducts(new ArrayList<>(LibraryDatabase.getMoviesList())));
         List<Product> books = new ArrayList<>(libraryService.getUnavailableProducts(new ArrayList<>(LibraryDatabase.getBooksList())));
+
+        if (books.size() == 0 && movies.size() == 0) {
+            outPrintStream.println("All Products Available");
+            return;
+        }
+
         if (movies.size() > 0) {
             outPrintStream.println("\nChecked out Movies:");
             printCheckedOutProducts(movies);
