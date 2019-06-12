@@ -1,4 +1,4 @@
-package com.twu.biblioteca.helper;
+package com.twu.biblioteca.db;
 
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
@@ -8,18 +8,18 @@ import java.util.List;
 
 import static org.junit.Assert.assertTrue;
 
-public class LibraryHelperTest {
+public class LibraryDatabaseTest {
 
     @Test
     public void shouldReturnAtLeastOneBook() {
-        List<Book> booksList = LibraryHelper.getBooksList();
+        List<Book> booksList = LibraryDatabase.getBooksList();
 
         assertTrue(booksList.size() > 0);
     }
 
     @Test
     public void shouldReturnAtLeastOneMovie() {
-        List<Movie> movies = LibraryHelper.getMoviesList();
+        List<Movie> movies = LibraryDatabase.getMoviesList();
 
         assertTrue(movies.size() > 0);
     }

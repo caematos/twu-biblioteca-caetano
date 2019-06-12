@@ -3,7 +3,7 @@ package com.twu.biblioteca.service;
 import com.twu.biblioteca.exception.CheckinNotAvailable;
 import com.twu.biblioteca.exception.CheckoutNotAvailable;
 import com.twu.biblioteca.exception.ProductNotFoundException;
-import com.twu.biblioteca.helper.LibraryHelper;
+import com.twu.biblioteca.db.LibraryDatabase;
 import com.twu.biblioteca.model.Book;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Product;
@@ -35,7 +35,7 @@ public class LibraryServiceTest {
     @Test
     public void shouldOnlyListAvailableProducts() {
         //given (arrange)
-        List<Book> books = LibraryHelper.getBooksList();
+        List<Book> books = LibraryDatabase.getBooksList();
         int initialAvailableBooks = libraryService.getAvailableProducts(new ArrayList<>(books)).size();
 
         //when (act)
@@ -45,6 +45,21 @@ public class LibraryServiceTest {
 
         //then (assert)
         assertEquals(finalAvailableBooks, initialAvailableBooks - 1);
+    }
+
+    @Test
+    public void shouldOnlyListUnavailableProducts(){
+        List<Book> booksList = LibraryDatabase.getBooksList();
+
+        int initialAvailableBooks = booksList.size();
+
+        booksList.get(0).setAvailable(false);
+        booksList.get(1).setAvailable(false);
+
+        int expectedUnavailableBooks = libraryService.getUnavailableProducts(new ArrayList<>(booksList)).size();
+
+        assertEquals(2, expectedUnavailableBooks);
+
     }
 
     @Test
@@ -94,7 +109,7 @@ public class LibraryServiceTest {
     @Test
     public void shouldFindBookByTitle() throws ProductNotFoundException {
         //given
-        List<Book> books = LibraryHelper.getBooksList();
+        List<Book> books = LibraryDatabase.getBooksList();
 
         //when
         String firstBookOfTheListTitle = books.get(0).getTitle();
@@ -105,7 +120,7 @@ public class LibraryServiceTest {
 
     @Test
     public void shouldFindMovieByTitle() throws ProductNotFoundException {
-        List<Movie> movies = LibraryHelper.getMoviesList();
+        List<Movie> movies = LibraryDatabase.getMoviesList();
 
         String firstTitleOfTheList = movies.get(0).getTitle();
         Movie movie = libraryService.findMovieByTitle(movies, firstTitleOfTheList);
@@ -117,7 +132,7 @@ public class LibraryServiceTest {
     public void shouldThrowProductNotFoundExceptionWhenProductIsNotFound() throws ProductNotFoundException {
         exception.expect(ProductNotFoundException.class);
 
-        libraryService.findProductByTitle(new ArrayList<>(LibraryHelper.getBooksList()), "");
+        libraryService.findProductByTitle(new ArrayList<>(LibraryDatabase.getBooksList()), "");
     }
 
     @Test

@@ -79,7 +79,8 @@ public class Movie extends Product {
 
     @Override
     public String toString() {
-        return "Movie title: " + title + ", Director: " + director + ", Year: " + year + ", Rating: " + rating.toString();
+        String checkedOutBy = null == this.checkoutBy ? "" : ", Checked out by: " + this.getCheckoutBy().getLogin();
+        return "Movie title: " + title + ", Director: " + director + ", Year: " + year + ", Rating: " + rating.toString() + checkedOutBy;
     }
 
     @Override

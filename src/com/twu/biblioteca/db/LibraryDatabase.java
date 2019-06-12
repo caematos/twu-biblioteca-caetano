@@ -1,6 +1,7 @@
-package com.twu.biblioteca.helper;
+package com.twu.biblioteca.db;
 
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Customer;
 import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Rating;
 
@@ -8,9 +9,10 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-public class LibraryHelper {
+public class LibraryDatabase {
     private static List<Book> books;
     private static List<Movie> movies;
+    private static List<Customer> customers;
 
     public static List<Book> getBooksList() {
         if (null == books) {
@@ -32,4 +34,16 @@ public class LibraryHelper {
         return movies;
     }
 
+    public static List<Customer> getCustomersList() {
+        if (null == customers) {
+            return customers = asList(new Customer("111-1111", "password", true),
+                    new Customer("222-2222", "password"),
+                    new Customer("333-3333", "password"));
+        }
+        return customers;
+    }
+
+    public static void setCustomers(List<Customer> customers) {
+        LibraryDatabase.customers = customers;
+    }
 }

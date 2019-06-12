@@ -22,6 +22,7 @@ public class LibraryService {
         if (!product.isAvailable()) {
             throw new CheckoutNotAvailable();
         }
+        product.setCheckoutBy(CustomerService.getLoggedCustomer());
         product.setAvailable(false);
     }
 
@@ -29,6 +30,7 @@ public class LibraryService {
         if (product.isAvailable()) {
             throw new CheckinNotAvailable();
         }
+        product.setCheckoutBy(null);
         product.setAvailable(true);
     }
 
@@ -50,4 +52,7 @@ public class LibraryService {
         return firstMatchingProduct.get();
     }
 
+    public List<Product> getUnavailableProducts(List<Product> products) {
+        return products.stream().filter(p -> !p.isAvailable()).collect(Collectors.toList());
+    }
 }

@@ -91,7 +91,9 @@ public class Book extends Product {
 
     @Override
     public String toString() {
-        return "Book title: " + title + ", Author(s): " + author + ", " + releasedYear;
+        String checkedOutBy = null == this.checkoutBy ? "" : ", Checked out by: " + this.getCheckoutBy().getLogin();
+        return "Book title: " + title + ", Author(s): " + author + ", " + releasedYear + checkedOutBy;
     }
+
 
 }

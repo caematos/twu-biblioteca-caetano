@@ -1,12 +1,11 @@
 package com.twu.biblioteca;
 
-import com.twu.biblioteca.exception.CheckinNotAvailable;
-import com.twu.biblioteca.exception.CheckoutNotAvailable;
-import com.twu.biblioteca.exception.ProductNotFoundException;
-import com.twu.biblioteca.helper.LibraryHelper;
+import com.twu.biblioteca.db.LibraryDatabase;
+import com.twu.biblioteca.exception.*;
 import com.twu.biblioteca.model.Menu;
 import com.twu.biblioteca.model.Product;
 import com.twu.biblioteca.service.LibraryService;
+import com.twu.biblioteca.service.LoginService;
 
 import java.io.PrintStream;
 import java.util.ArrayList;
@@ -23,16 +22,19 @@ public class BibliotecaApp {
     private static final String RETURN_ERROR_MESSAGE = "That is not a valid product to return";
     public static final String PRODUCT_NOT_FOUND = "Product not found, please try again.";
 
-    private static final int MENU_OPTION_LIST_BOOKS = 1;
     private static final int MENU_OPTION_QUIT = 0;
+    private static final int MENU_OPTION_LIST_BOOKS = 1;
     private static final int MENU_OPTION_CHECKOUT_BOOK = 2;
     private static final int MENU_OPTION_RETURN_BOOK = 3;
     private static final int MENU_OPTION_LIST_MOVIES = 4;
     private static final int MENU_OPTION_CHECKOUT_MOVIE = 5;
     private static final int MENU_OPTION_CHECKIN_MOVIE = 6;
+    public static final String TYPE_TITLE = "title";
+    public static final int MENU_OPTION_VIEW_CHECKEDOUT_PRODUCTS = 7;
 
     private PrintStream outPrintStream;
     private LibraryService libraryService = new LibraryService();
+    private LoginService loginService = new LoginService();
 
     public BibliotecaApp(PrintStream outPrintStream) {
         this.outPrintStream = outPrintStream;
@@ -44,35 +46,54 @@ public class BibliotecaApp {
     }
 
     private void startBiblioteca() {
-        printWelcomeMessage();
-        int userChoice;
-        do {
-            displayOptionsMenu();
-            userChoice = getUserChoice();
-            executeUserChoice(userChoice);
-        } while (userChoice != 0);
+        if (confirmLogin()) {
+            printWelcomeMessage();
+            int userChoice;
+            do {
+                displayOptionsMenu();
+                userChoice = getUserChoice();
+                executeUserChoice(userChoice);
+            } while (userChoice != 0);
+        }
+    }
+
+    private boolean confirmLogin() {
+        String login = getInputFromUser("your login");
+        String password = getInputFromUser("your password");
+        try {
+            return loginService.login(login, password);
+        } catch (CustomerNotFoundException e) {
+            outPrintStream.println("Invalid Login. Bye!");
+            return false;
+        } catch (InvalidPasswordException e) {
+            outPrintStream.println("Invalid Password. Bye!");
+            return false;
+        }
     }
 
     public void executeUserChoice(int userChoice) {
         String invalidOptionMessage = "Please, choose a valid option.";
         switch (userChoice) {
             case MENU_OPTION_LIST_BOOKS:
-                printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryHelper.getBooksList()))));
+                printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryDatabase.getBooksList()))));
                 break;
             case MENU_OPTION_CHECKOUT_BOOK:
-                findAndCheckoutProductByTitle(new ArrayList<>(LibraryHelper.getBooksList()), getProductTitleFromUser());
+                findAndCheckoutProductByTitle(new ArrayList<>(LibraryDatabase.getBooksList()), getInputFromUser(TYPE_TITLE));
                 break;
             case MENU_OPTION_RETURN_BOOK:
-                findAndCheckinProductByTitle(new ArrayList<>(LibraryHelper.getBooksList()), getProductTitleFromUser());
+                findAndCheckinProductByTitle(new ArrayList<>(LibraryDatabase.getBooksList()), getInputFromUser(TYPE_TITLE));
                 break;
             case MENU_OPTION_LIST_MOVIES:
-                printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryHelper.getMoviesList()))));
+                printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryDatabase.getMoviesList()))));
                 break;
             case MENU_OPTION_CHECKOUT_MOVIE:
-                findAndCheckoutProductByTitle(new ArrayList<>(LibraryHelper.getMoviesList()), getProductTitleFromUser());
+                findAndCheckoutProductByTitle(new ArrayList<>(LibraryDatabase.getMoviesList()), getInputFromUser(TYPE_TITLE));
                 break;
             case MENU_OPTION_CHECKIN_MOVIE:
-                findAndCheckinProductByTitle(new ArrayList<>(LibraryHelper.getMoviesList()), getProductTitleFromUser());
+                findAndCheckinProductByTitle(new ArrayList<>(LibraryDatabase.getMoviesList()), getInputFromUser(TYPE_TITLE));
+                break;
+            case MENU_OPTION_VIEW_CHECKEDOUT_PRODUCTS:
+                printCheckedOutProducts();
                 break;
             case MENU_OPTION_QUIT:
                 break;
@@ -81,9 +102,28 @@ public class BibliotecaApp {
         }
     }
 
-    private String getProductTitleFromUser() {
+    private void printCheckedOutProducts() {
+        List<Product> movies = new ArrayList<>(libraryService.getUnavailableProducts(new ArrayList<>(LibraryDatabase.getMoviesList())));
+        List<Product> books = new ArrayList<>(libraryService.getUnavailableProducts(new ArrayList<>(LibraryDatabase.getBooksList())));
+        if (movies.size() > 0) {
+            outPrintStream.println("\nChecked out Movies:");
+            printCheckedOutProducts(movies);
+        }
+        if (books.size() > 0) {
+            outPrintStream.println("\nChecked out Books:");
+            printCheckedOutProducts(books);
+        }
+    }
+
+    private void printCheckedOutProducts(List<Product> products) {
+        for (Product product : products) {
+            outPrintStream.println(product.toString());
+        }
+    }
+
+    private String getInputFromUser(String type) {
         Scanner scanner = new Scanner(System.in);
-        outPrintStream.println("Please, insert title and press <return>: ");
+        outPrintStream.println("Please, insert " + type + " and press <return>: ");
         return scanner.nextLine();
     }
 
