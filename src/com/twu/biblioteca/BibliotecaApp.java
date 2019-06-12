@@ -29,6 +29,7 @@ public class BibliotecaApp {
     private static final int MENU_OPTION_RETURN_BOOK = 3;
     private static final int MENU_OPTION_LIST_MOVIES = 4;
     private static final int MENU_OPTION_CHECKOUT_MOVIE = 5;
+    private static final int MENU_OPTION_CHECKIN_MOVIE = 6;
 
     private PrintStream outPrintStream;
     private LibraryService libraryService = new LibraryService();
@@ -69,6 +70,9 @@ public class BibliotecaApp {
                 break;
             case MENU_OPTION_CHECKOUT_MOVIE:
                 findAndCheckoutProductByTitle(new ArrayList<>(LibraryHelper.getMoviesList()), getProductTitleFromUser());
+                break;
+            case MENU_OPTION_CHECKIN_MOVIE:
+                findAndCheckinProductByTitle(new ArrayList<>(LibraryHelper.getMoviesList()), getProductTitleFromUser());
                 break;
             case MENU_OPTION_QUIT:
                 break;
