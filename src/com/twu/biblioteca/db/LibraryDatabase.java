@@ -36,9 +36,9 @@ public class LibraryDatabase {
 
     public static List<Customer> getCustomersList() {
         if (null == customers) {
-            return customers = asList(new Customer("111-1111", "password", true),
-                    new Customer("222-2222", "password"),
-                    new Customer("333-3333", "password"));
+            return customers = asList(new Customer("111-1111", "password", true, "Caetano", "caematos@gmail.com", "555-1245-231"),
+                    new Customer("222-2222", "password", false, "Fulano", "fulano@fulano.com", "555-23132-5453"),
+                    new Customer("333-3333", "password", false, "Beltrano", "beltrano@beltrano.com", "555-56464-456"));
         }
         return customers;
     }

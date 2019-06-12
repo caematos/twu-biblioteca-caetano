@@ -49,6 +49,7 @@ public class BibliotecaApp {
     private void startBiblioteca() {
         if (confirmLogin()) {
             printWelcomeMessage();
+            printCustomerInformation();
             int userChoice;
             do {
                 displayOptionsMenu();
@@ -56,6 +57,10 @@ public class BibliotecaApp {
                 executeUserChoice(userChoice);
             } while (userChoice != 0);
         }
+    }
+
+    private void printCustomerInformation() {
+        outPrintStream.println("Logged Customer Information: " + CustomerService.getLoggedCustomer().toString());
     }
 
     private boolean confirmLogin() {
