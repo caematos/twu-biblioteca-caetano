@@ -1,5 +1,8 @@
 package com.twu.biblioteca;
 
+import com.twu.biblioteca.exception.CheckinNotAvailable;
+import com.twu.biblioteca.exception.CheckoutNotAvailable;
+import com.twu.biblioteca.exception.ProductNotFoundException;
 import com.twu.biblioteca.helper.LibraryHelper;
 import com.twu.biblioteca.model.Menu;
 import com.twu.biblioteca.model.Product;
@@ -12,12 +15,20 @@ import java.util.List;
 import java.util.Scanner;
 
 public class BibliotecaApp {
+
     private static final String WELCOME_MESSAGE = "Welcome to Biblioteca. Your one-stop-shop for great book titles in Bangalore!";
+    private static final String CHECKOUT_SUCCESS_MESSAGE = "Thank you! Enjoy the product.";
+    private static final String CHECKOUT_ERROR_MESSAGE = "Sorry, that product is not available";
+    private static final String RETURN_SUCCESS_MESSAGE = "Thank you for returning the product";
+    private static final String RETURN_ERROR_MESSAGE = "That is not a valid product to return";
+    public static final String PRODUCT_NOT_FOUND = "Product not found, please try again.";
+
     private static final int MENU_OPTION_LIST_BOOKS = 1;
     private static final int MENU_OPTION_QUIT = 0;
     private static final int MENU_OPTION_CHECKOUT_BOOK = 2;
     private static final int MENU_OPTION_RETURN_BOOK = 3;
-    public static final int MENU_OPTION_LIST_MOVIES = 4;
+    private static final int MENU_OPTION_LIST_MOVIES = 4;
+    private static final int MENU_OPTION_CHECKOUT_MOVIE = 5;
 
     private PrintStream outPrintStream;
     private LibraryService libraryService = new LibraryService();
@@ -33,7 +44,6 @@ public class BibliotecaApp {
 
     private void startBiblioteca() {
         printWelcomeMessage();
-
         int userChoice;
         do {
             displayOptionsMenu();
@@ -49,13 +59,16 @@ public class BibliotecaApp {
                 printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryHelper.getBooksList()))));
                 break;
             case MENU_OPTION_CHECKOUT_BOOK:
-                libraryService.findAndCheckoutBookByTitle(getBookTitleFromUser());
+                findAndCheckoutProductByTitle(new ArrayList<>(LibraryHelper.getBooksList()), getProductTitleFromUser());
                 break;
             case MENU_OPTION_RETURN_BOOK:
-                libraryService.findAndReturnBookByTitle(getBookTitleFromUser());
+                findAndCheckinProductByTitle(new ArrayList<>(LibraryHelper.getBooksList()), getProductTitleFromUser());
                 break;
             case MENU_OPTION_LIST_MOVIES:
                 printProductsList(new ArrayList<>(libraryService.getAvailableProducts(new ArrayList<>(LibraryHelper.getMoviesList()))));
+                break;
+            case MENU_OPTION_CHECKOUT_MOVIE:
+                findAndCheckoutProductByTitle(new ArrayList<>(LibraryHelper.getMoviesList()), getProductTitleFromUser());
                 break;
             case MENU_OPTION_QUIT:
                 break;
@@ -64,9 +77,9 @@ public class BibliotecaApp {
         }
     }
 
-    private String getBookTitleFromUser() {
+    private String getProductTitleFromUser() {
         Scanner scanner = new Scanner(System.in);
-        outPrintStream.println("Please, insert book title and press <return>: ");
+        outPrintStream.println("Please, insert title and press <return>: ");
         return scanner.nextLine();
     }
 
@@ -82,7 +95,7 @@ public class BibliotecaApp {
     public void displayOptionsMenu() {
         outPrintStream.println();
         for (String menuOption : new Menu().getMenuOptions()) {
-            outPrintStream.print(menuOption + "\n");
+            outPrintStream.print(menuOption + " - ");
         }
     }
 
@@ -98,6 +111,28 @@ public class BibliotecaApp {
 
     public static String getWelcomeMessage() {
         return WELCOME_MESSAGE;
+    }
+
+    public void findAndCheckinProductByTitle(List<Product> products, String title) {
+        try {
+            libraryService.checkinProduct(libraryService.findProductByTitle(products, title));
+            outPrintStream.println(RETURN_SUCCESS_MESSAGE);
+        } catch (ProductNotFoundException e) {
+            outPrintStream.println(PRODUCT_NOT_FOUND);
+        } catch (CheckinNotAvailable e) {
+            outPrintStream.println(RETURN_ERROR_MESSAGE);
+        }
+    }
+
+    public void findAndCheckoutProductByTitle(List<Product> products, String title) {
+        try {
+            libraryService.checkoutProduct(libraryService.findProductByTitle(products, title));
+            outPrintStream.println(CHECKOUT_SUCCESS_MESSAGE);
+        } catch (ProductNotFoundException e) {
+            outPrintStream.println(PRODUCT_NOT_FOUND);
+        } catch (CheckoutNotAvailable e) {
+            outPrintStream.println(CHECKOUT_ERROR_MESSAGE);
+        }
     }
 
 }

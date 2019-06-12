@@ -1,5 +1,7 @@
 package com.twu.biblioteca.model;
 
+import java.util.Objects;
+
 public class Movie extends Product {
     private String title;
     private String director;
@@ -32,6 +34,7 @@ public class Movie extends Product {
         return this;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }
@@ -76,6 +79,23 @@ public class Movie extends Product {
 
     @Override
     public String toString() {
-        return "Movie title='" + title + ", Director='" + director + ", year=" + year + ", rating=" + rating.toString();
+        return "Movie title: " + title + ", Director: " + director + ", Year=" + year + ", Rating=" + rating;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Movie movie = (Movie) o;
+        return getYear() == movie.getYear() &&
+                isAvailable() == movie.isAvailable() &&
+                Objects.equals(getTitle(), movie.getTitle()) &&
+                Objects.equals(getDirector(), movie.getDirector()) &&
+                getRating() == movie.getRating();
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(getTitle(), getDirector(), getYear(), getRating(), isAvailable());
     }
 }

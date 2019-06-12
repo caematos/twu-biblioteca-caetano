@@ -3,82 +3,51 @@ package com.twu.biblioteca.service;
 import com.twu.biblioteca.exception.CheckinNotAvailable;
 import com.twu.biblioteca.exception.CheckoutNotAvailable;
 import com.twu.biblioteca.exception.ProductNotFoundException;
-import com.twu.biblioteca.helper.LibraryHelper;
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Movie;
 import com.twu.biblioteca.model.Product;
 
-import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class LibraryService {
-    private static final String CHECKOUT_SUCCESS_MESSAGE = "Thank you! Enjoy the book.";
-    private static final String CHECKOUT_ERROR_MESSAGE = "Sorry, that book is not available";
-    private static final String RETURN_SUCCESS_MESSAGE = "Thank you for returning the book";
-    private static final String RETURN_ERROR_MESSAGE = "That is not a valid book to return";
-
-    private PrintStream outPrintStream;
-
-    public LibraryService() {
-        this.outPrintStream = System.out;
-    }
-
-    public LibraryService(PrintStream systemOut) {
-        this.outPrintStream = systemOut;
-    }
-
-    public List<Book> getAvailableBooks(List<Book> bookList) {
-        return bookList.stream().filter(Book::isAvailable).collect(Collectors.toList());
-    }
 
     public List<Product> getAvailableProducts(List<Product> products) {
         return products.stream().filter(Product::isAvailable).collect(Collectors.toList());
     }
 
-    public void checkoutBook(Book book) throws CheckoutNotAvailable {
-        if (!book.isAvailable()) {
+    public void checkoutProduct(Product product) throws CheckoutNotAvailable {
+        if (!product.isAvailable()) {
             throw new CheckoutNotAvailable();
         }
-            book.setAvailable(false);
+        product.setAvailable(false);
     }
 
-    public void returnBook(Book book) throws CheckinNotAvailable {
-        if (book.isAvailable()) {
+    public void checkinProduct(Product product) throws CheckinNotAvailable {
+        if (product.isAvailable()) {
             throw new CheckinNotAvailable();
         }
-        book.setAvailable(true);
+        product.setAvailable(true);
     }
 
-    public void findAndReturnBookByTitle(String bookTitle) {
-        try {
-            returnBook(getBookByTitle(LibraryHelper.getBooksList(), bookTitle));
-            outPrintStream.println(RETURN_SUCCESS_MESSAGE);
-        } catch (ProductNotFoundException e) {
-            outPrintStream.println("Book not found, please try again.");
-        } catch (CheckinNotAvailable e) {
-            outPrintStream.println(RETURN_ERROR_MESSAGE);
-        }
+    public Book findBookByTitle(List<Book> books, String bookTitleQuery) throws ProductNotFoundException {
+        return (Book) findProductByTitle(new ArrayList<>(books), bookTitleQuery);
     }
 
-    public void findAndCheckoutBookByTitle(String bookTitle) {
-        try {
-            checkoutBook(getBookByTitle(LibraryHelper.getBooksList(), bookTitle));
-            outPrintStream.println(CHECKOUT_SUCCESS_MESSAGE);
-        } catch (ProductNotFoundException e) {
-            outPrintStream.println("Book not found, please try again.");
-        } catch (CheckoutNotAvailable e) {
-            outPrintStream.println(CHECKOUT_ERROR_MESSAGE);
-        }
+    public Movie findMovieByTitle(List<Movie> movies, String movieTitleQuery) throws ProductNotFoundException {
+        return (Movie) findProductByTitle(new ArrayList<>(movies), movieTitleQuery);
     }
 
-    public Book getBookByTitle(List<Book> dummyBookList, String bookTitleQuery) throws ProductNotFoundException {
-        Optional<Book> firstBookMatch = dummyBookList.stream().filter(c -> c.getTitle().equalsIgnoreCase(bookTitleQuery)).findFirst();
+    public Product findProductByTitle(List<Product> products, String titleQuery) throws ProductNotFoundException {
+        Optional<Product> firstMatchingProduct = products.stream().filter(c -> c.getTitle().equalsIgnoreCase(titleQuery)).findFirst();
 
-        if (!firstBookMatch.isPresent()) {
+        if (!firstMatchingProduct.isPresent()) {
             throw new ProductNotFoundException();
         }
 
-        return firstBookMatch.get();
+        return firstMatchingProduct.get();
     }
+
 }

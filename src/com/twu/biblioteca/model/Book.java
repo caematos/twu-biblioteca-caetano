@@ -65,6 +65,7 @@ public class Book extends Product {
         this.author = author;
     }
 
+    @Override
     public String getTitle() {
         return title;
     }

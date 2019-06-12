@@ -5,13 +5,14 @@ import com.twu.biblioteca.exception.CheckoutNotAvailable;
 import com.twu.biblioteca.exception.ProductNotFoundException;
 import com.twu.biblioteca.helper.LibraryHelper;
 import com.twu.biblioteca.model.Book;
+import com.twu.biblioteca.model.Movie;
+import com.twu.biblioteca.model.Product;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -19,7 +20,7 @@ import static java.util.Arrays.asList;
 import static org.junit.Assert.*;
 
 public class LibraryServiceTest {
-    private Book testBook1;
+    private Book testProductBook1;
     private LibraryService libraryService;
 
     @Rule
@@ -27,99 +28,107 @@ public class LibraryServiceTest {
 
     @Before
     public void setUpBooks() {
-        testBook1 = new Book("testBook", "testAuthor", 2019);
-        ByteArrayOutputStream outSpy = new ByteArrayOutputStream();
-        libraryService = new LibraryService(new PrintStream(outSpy));
+        testProductBook1 = new Book("testBook", "testAuthor", 2019);
+        libraryService = new LibraryService();
     }
 
     @Test
-    public void shouldOnlyListAvailableBooks() {
+    public void shouldOnlyListAvailableProducts() {
         //given (arrange)
-        List<Book> bookList = LibraryHelper.getBooksList();
-        int initialAvailableBooks = libraryService.getAvailableBooks(bookList).size();
+        List<Book> books = LibraryHelper.getBooksList();
+        int initialAvailableBooks = libraryService.getAvailableProducts(new ArrayList<>(books)).size();
 
         //when (act)
-        bookList.get(0).setAvailable(false);
+        books.get(0).setAvailable(false);
 
-        int finalAvailableBooks = libraryService.getAvailableBooks(bookList).size();
+        int finalAvailableBooks = libraryService.getAvailableProducts(new ArrayList<>(books)).size();
 
         //then (assert)
         assertEquals(finalAvailableBooks, initialAvailableBooks - 1);
     }
 
     @Test
-    public void shouldMarkABookAsUnavailable() throws CheckoutNotAvailable {
+    public void shouldMarkAProductAsUnavailable() throws CheckoutNotAvailable {
         LibraryService libraryService = new LibraryService();
 
-        libraryService.checkoutBook(testBook1);
+        libraryService.checkoutProduct(testProductBook1);
 
-        assertFalse(testBook1.isAvailable());
+        assertFalse(testProductBook1.isAvailable());
     }
 
     @Test
-    public void shouldMarkBookAsAvailable() throws CheckinNotAvailable {
-        testBook1.setAvailable(false);
+    public void shouldMarkProductAsAvailable() throws CheckinNotAvailable {
+        testProductBook1.setAvailable(false);
 
-        libraryService.returnBook(testBook1);
+        libraryService.checkinProduct(testProductBook1);
 
-        assertTrue(testBook1.isAvailable());
+        assertTrue(testProductBook1.isAvailable());
     }
 
     @Test
     public void shouldPassWhenSuccessfulCheckout() throws CheckoutNotAvailable {
-        libraryService.checkoutBook(testBook1);
+        libraryService.checkoutProduct(testProductBook1);
     }
 
     @Test
     public void shouldThrowExceptionWhenInvalidCheckout() throws CheckoutNotAvailable {
         exception.expect(CheckoutNotAvailable.class);
 
-        testBook1.setAvailable(false);
-        libraryService.checkoutBook(testBook1);
+        testProductBook1.setAvailable(false);
+        libraryService.checkoutProduct(testProductBook1);
     }
 
     @Test
-    public void shouldPassWhenSuccessfulReturn() throws CheckinNotAvailable {
-        testBook1.setAvailable(false);
-        libraryService.returnBook(testBook1);
+    public void shouldPassWhenSuccessfulCheckin() throws CheckinNotAvailable {
+        testProductBook1.setAvailable(false);
+        libraryService.checkinProduct(testProductBook1);
     }
 
     @Test
-    public void shouldThrowErrorWhenInvalidReturn() throws CheckinNotAvailable {
+    public void shouldThrowErrorWhenInvalidCheckin() throws CheckinNotAvailable {
         exception.expect(CheckinNotAvailable.class);
 
-        libraryService.returnBook(testBook1);
+        libraryService.checkinProduct(testProductBook1);
     }
 
     @Test
     public void shouldFindBookByTitle() throws ProductNotFoundException {
         //given
-        List<Book> dummyBookList = LibraryHelper.getBooksList();
+        List<Book> books = LibraryHelper.getBooksList();
 
         //when
-        String firstBookOfTheListTitle = dummyBookList.get(0).getTitle();
-        Book book = libraryService.getBookByTitle(dummyBookList, firstBookOfTheListTitle);
+        String firstBookOfTheListTitle = books.get(0).getTitle();
+        Book book = libraryService.findBookByTitle(books, firstBookOfTheListTitle);
 
         assertEquals(book.getTitle().toUpperCase(), firstBookOfTheListTitle.toUpperCase());
     }
 
-
     @Test
-    public void shouldThrowBookNotFoundExceptionWhenBookIsNotFound() throws ProductNotFoundException {
-        exception.expect(ProductNotFoundException.class);
+    public void shouldFindMovieByTitle() throws ProductNotFoundException {
+        List<Movie> movies = LibraryHelper.getMoviesList();
 
-        libraryService.getBookByTitle(LibraryHelper.getBooksList(), "");
+        String firstTitleOfTheList = movies.get(0).getTitle();
+        Movie movie = libraryService.findMovieByTitle(movies, firstTitleOfTheList);
+
+        assertEquals(movie.getTitle().toUpperCase(), firstTitleOfTheList.toUpperCase());
     }
 
     @Test
-    public void shouldGetAllBooksMarkedAsAvailable() {
+    public void shouldThrowProductNotFoundExceptionWhenProductIsNotFound() throws ProductNotFoundException {
+        exception.expect(ProductNotFoundException.class);
+
+        libraryService.findProductByTitle(new ArrayList<>(LibraryHelper.getBooksList()), "");
+    }
+
+    @Test
+    public void shouldGetAllProductsMarkedAsAvailable() {
         Book unavailableBook = new Book("", "", 2);
         unavailableBook.setAvailable(false);
         Book availableBook = new Book("", "", 2);
 
         List<Book> library = asList(unavailableBook, availableBook);
-        List<Book> expectedBooksList = Collections.singletonList(availableBook);
-        List<Book> actualBooksList = libraryService.getAvailableBooks(library);
+        List<Product> expectedBooksList = Collections.singletonList(availableBook);
+        List<Product> actualBooksList = libraryService.getAvailableProducts(new ArrayList<>(library));
 
         assertEquals(actualBooksList.size(), 1);
         assertEquals(expectedBooksList, actualBooksList);
