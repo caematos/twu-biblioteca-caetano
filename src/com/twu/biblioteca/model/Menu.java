@@ -11,7 +11,6 @@ public class Menu {
     private static final String MENU_ITEM_RETURN_A_BOOK = "[3]Return a book";
     private static final String MENU_ITEM_LIST_OF_MOVIES = "[4]List of Movies";
 
-
     private ArrayList<String> menuOptions = new ArrayList<>();
 
     public Menu() {

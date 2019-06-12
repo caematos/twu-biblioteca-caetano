@@ -79,7 +79,7 @@ public class Movie extends Product {
 
     @Override
     public String toString() {
-        return "Movie title: " + title + ", Director: " + director + ", Year=" + year + ", Rating=" + rating;
+        return "Movie title: " + title + ", Director: " + director + ", Year: " + year + ", Rating: " + rating.toString();
     }
 
     @Override
